@@ -129,8 +129,8 @@
   #cama{left:3%;bottom:13%;width:min(25%,280px)}
   #tapete{right:5%;bottom:5%;width:min(27%,300px)}
   #plato{position:absolute;left:17%;bottom:4%;width:min(9%,100px);z-index:1}
-  .mascota{position:absolute;left:44%;bottom:25%;height:min(46%,290px);aspect-ratio:360/445;transform-origin:50% 100%;
-    transition:filter 1.2s}
+  .mascota{position:absolute;left:44%;bottom:25%;height:min(46%,290px);aspect-ratio:360/445;transform-origin:50% 100%}
+  .mascota .cuerpo img{filter:var(--filtro,none);transition:filter 1.2s}
   .mascota .cuerpo{position:absolute;inset:0;transform-origin:50% 100%}
   .mascota img{position:absolute;inset:0;width:100%;height:100%;-webkit-user-drag:none}
   .mascota.debil .cuerpo{transition:transform 1.6s cubic-bezier(.5,0,.3,1);transform:translate(16%,-34%) rotate(-82deg) scale(.9)}
@@ -1063,7 +1063,7 @@ function iniciarCuidado(){
          ultimo:0, dia:1, pide:null, pideAnt:null, proxPide:2.5, cuidados:0, ignorados:0, caricias:0, avisoAb:false, llamado:0, tSolo:0, tPintura:0, puedePreguntar:true, preguntas:0, tPregunta:0, expr:'abierto', accOk:false};
   caras.pint = {}; prepararCaras(pintadoURL, 'pint'); ponerProps('');
   $('#escena').className = 'escena tema0';
-  $('#mascota').classList.remove('debil'); $('#mascota').style.filter = '';
+  $('#mascota').classList.remove('debil'); $('#cuerpo').style.setProperty('--filtro','none');
   $('#petPint').style.opacity = 1; $('#nota').textContent = '';
   $('#dia').textContent = '☀️ Día 1'; $('#pide').classList.remove('on');
   document.querySelectorAll('.acciones .btn').forEach(b => { b.disabled = false; b.classList.remove('pide'); });
@@ -1202,7 +1202,7 @@ function animarCuidado(dt){
   const pint = clamp(1 - (pet.t - pet.tPintura)/(DIA*5.5), 0, 1);
   $('#petPint').style.opacity = pint;
   const gris = clamp((55 - v)/55, 0, 1);
-  $('#mascota').style.filter = `grayscale(${gris*.85}) brightness(${1 - gris*.12})`;
+  $('#cuerpo').style.setProperty('--filtro', `grayscale(${gris*.85}) brightness(${1 - gris*.12})`);
   $('#corazon').style.filter = `grayscale(${gris})`;
   // te pide cosas (la invitación a seguir jugando)
   if(!pet.pide && pet.t > pet.proxPide && v > 30) ponerPide();
@@ -1254,7 +1254,7 @@ async function terminar(){
   $('#cuerpo').style.transform = '';
   document.querySelectorAll('.acciones .btn').forEach(b => b.disabled = true);
   $('#vida').style.width = '0%'; $('#estado').textContent = '…';
-  $('#mascota').style.filter = 'grayscale(1) brightness(.9)';
+  $('#cuerpo').style.setProperty('--filtro', 'grayscale(1) brightness(.9)');
   $('#mascota').classList.add('debil');
   $('#petPint').style.opacity = 0;
   pararMusica(); sfx.triste();
